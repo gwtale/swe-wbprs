@@ -96,9 +96,19 @@ module.exports = function (app) {
    */
   
   app.get('/login', function (req, res) {
-    res.render('login.jade', {
+    var params = {
       title : 'Login'
-    });
+    };
+    
+    // if in development env, filling in the form to make my life easier
+    if (app.settings.env === 'development') {
+      console.log('Filling in dummy email/pass');
+      
+      params.dummyEmail = 'a@a.com';
+      params.dummyPass = 'qwerty';
+    }
+    
+    res.render('login.jade', params);
   });
   
   /*

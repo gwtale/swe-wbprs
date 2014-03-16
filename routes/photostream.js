@@ -8,7 +8,7 @@ module.exports = function (app) {
   
   app.get('/', auth, function (req, res) {
     res.render('photostream.jade', {
-      title : 'Photostream'
+      title : req.session.name + '\'s Photostream'
     });
   });
 }

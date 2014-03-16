@@ -1,4 +1,8 @@
 extends layout
 
 block content
-  p Welcome, #{session.name}..
+  if !user
+    p
+      | Welcome, #{session.name}. Want to 
+      a(href="/photo/upload") upload
+      |  a photo?
