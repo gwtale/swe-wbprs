@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   
-  form(method='post', action='/photo/upload', enctype='application/x-www-form-urlencoded')
+  form(method='post', action='/photo/upload', enctype='multipart/form-data')
     ul
       li
         label(for="title") Title 
@@ -11,4 +11,8 @@ block content
         label(for="tags") Tags 
         i (seperated by spaces) 
         input#tags(name="tags")
+      li
+        label(for="image") Image 
+        i (2 MB max.) 
+        input#image(type="file", name="image")
     input(type="submit", value="Upload")

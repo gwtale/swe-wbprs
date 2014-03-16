@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var mongoose = require('mongoose');
 var Photo = mongoose.model('Photo');
 
@@ -25,11 +27,16 @@ module.exports = function (app) {
     var title = cleanString(req.param('title'));
     var tags = cleanString(req.param('tags')).split(' ');
     var user = req.session.email;
+    var image = req.files.image;
     
     Photo.create({
       title : title,
       tags : tags,
-      owner : user
+      owner : user,
+      image : {
+        data : fs.readFileSync(image.path),
+        contentType : image.type
+      }
      }, function (err, photo) {
        if (err) return next(err);
        
@@ -124,17 +131,34 @@ module.exports = function (app) {
   app.get("/photo/:id", auth, function (req, res, next) {
     var id = req.param('id');
     
-    var query = Photo.findById(id).populate('owner');
+    var query = Photo.findById(id).select('-image');
     query.exec(function (err, photo) {
       if (err) return next(err);
-      
       if (!photo) return next(); // 404
       
       res.render('photo/view.jade', {
         title : photo.title,
         photo : photo,
-        owned : (photo.owner.id === req.session.email)
+        owned : (photo.owner === req.session.email)
       });
+    });
+  });
+  
+  /*
+   * GET photo data
+   */
+  
+  app.get("/photo/:id/data", auth, function (req, res, next) {
+    var id = req.param('id');
+    
+    var query = Photo.findById(id).select('image');
+    query.exec(function (err, photo) {
+      if (err) return next(err);
+      if (!photo) return next(); // 404
+      if (!photo.image.contentType || !photo.image.data) return next();
+      
+      res.contentType(photo.image.contentType);
+      res.send(photo.image.data);
     });
   });
 };

@@ -15,10 +15,12 @@ block content
       b #{photo.tags[i]}
       if i < photo.tags.length - 1
         | , 
+  if owned
+    a(href="/photo/edit/#{photo.id}") Edit photo details
     br
     br
-    if owned
-      a(href="/photo/edit/#{photo.id}") Edit photo details
-      br
-      br
-      a(href="/photo/delete/#{photo.id}") !! Delete photo !!
+    a(href="/photo/delete/#{photo.id}") !! Delete photo !!
+    br
+    br
+  
+  img(src="/photo/#{photo.id}/data")    

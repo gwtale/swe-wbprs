@@ -22,6 +22,10 @@ var schema = mongoose.Schema({
   },
   likes : {
     type : [String]
+  },
+  image : {
+    data : Buffer,
+    contentType: String
   }
 });
 
