@@ -2,11 +2,22 @@ extends ../layout
 
 block content
   p
-    span #{photo.likes.length} likes
-    if owned
-      |  
-      span #{photo.isPrivate ? '🔒' : '🌏'}
-    br
+    - liked = (photo.likes.indexOf(session.email) >= 0)
+    - action = liked ? "unlike" : "like"
+    form(method='post', action='/photo/#{action}/#{photo.id}')
+      span #{photo.likes.length} likes
+      | 
+      if owned
+        span #{photo.isPrivate ? '🔒' : '🌏'}
+      else
+        input(type='submit', value='#{liked ? "💔" : "❤️"}')
+      br
+      if photo.likes.length > 0
+        span liked by 
+        - for (var i = 0; i < photo.likes.length; i++)
+          a(href="/user/#{photo.likes[i]}")= photo.likes[i]
+          if i < photo.likes.length - 1
+            | , 
     i created at #{photo.created.toGMTString()}
     br
     br

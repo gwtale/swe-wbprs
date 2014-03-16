@@ -100,6 +100,56 @@ module.exports = function (app) {
   });
   
   /*
+   * POST like photo
+   */
+  
+  app.post("/photo/like/:id", auth, function (req, res, next) {
+    var id = req.param('id');
+    var user = req.session.email;
+    
+    var update = {
+      $addToSet : {
+        likes : user
+      }
+    };
+    
+    Photo.findByIdAndUpdate(id, update, function (err, numAffected) {
+      if (err) return next(err);
+    
+      if (0 === numAffected) {
+        return next(new Error('Nothing changed?!'));
+      }
+      
+      res.redirect("/photo/" + id);
+    })
+  });
+  
+  /*
+   * POST unlike photo
+   */
+  
+  app.post("/photo/unlike/:id", auth, function (req, res, next) {
+    var id = req.param('id');
+    var user = req.session.email;
+    
+    var update = {
+      $pull : {
+        likes : user
+      }
+    };
+    
+    Photo.findByIdAndUpdate(id, update, function (err, numAffected) {
+      if (err) return next(err);
+    
+      if (0 === numAffected) {
+        return next(new Error('Nothing changed?!'));
+      }
+      
+      res.redirect("/photo/" + id);
+    })
+  });
+  
+  /*
    * GET delete photo -- TODO: This is baaad, should've used DELETE
    *                           but I'm in a hurry *sadface*
    */
