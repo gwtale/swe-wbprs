@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+
+  form(method='post', action='/photo/edit/#{photo.id}', enctype='application/x-www-form-urlencoded')
+    ul
+      li
+        label(for="title") Title 
+        input#title(name="title", value="#{photo.title}")
+      li
+        label(for="tags") Tags 
+        i (seperated by spaces) 
+        input#tags(name="tags", value="#{photo.tags.join(' ')}")
+      li
+        label(for="isPrivate") Private? 
+        input#tags(type="checkbox", name="isPrivate", checked=photo.isPrivate)
+    input(type="submit", value="Submit")

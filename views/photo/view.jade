@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  p
+    span #{photo.likes.length} likes
+    if owned
+      |  
+      span #{photo.isPrivate ? '🔒' : '🌏'}
+    br
+    i created at #{photo.created.toGMTString()}
+    br
+    br
+    | tagged under 
+    - for (var i = 0; i < photo.tags.length; i++)
+      b #{photo.tags[i]}
+      if i < photo.tags.length - 1
+        | , 
+    br
+    br
+    if owned
+      a(href="/photo/edit/#{photo.id}") Edit photo details
+      br
+      br
+      a(href="/photo/delete/#{photo.id}") !! Delete photo !!

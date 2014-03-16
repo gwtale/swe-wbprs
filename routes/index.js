@@ -1,6 +1,7 @@
 var photostream = require('./photostream');
 var login = require('./login');
 var photos = require('./photos');
+var users = require('./users');
 var errors = require('./errors');
 
 module.exports = function (app) {
@@ -13,6 +14,9 @@ module.exports = function (app) {
   
   // photo crud
   photos(app);
+  
+  // user
+  users(app);
   
   // error handlers
   errors(app);

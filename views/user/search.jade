@@ -1,0 +1,11 @@
+extends ../layout
+
+block content
+  if query
+    p We found #{users.length} users with last name #{query}:
+  else
+    p Listing all #{users.length} users:
+  ul.users
+    each user in users
+      li
+        a(href="/user/#{user.id}")= user.fullname

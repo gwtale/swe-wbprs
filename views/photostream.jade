@@ -2,7 +2,47 @@ extends layout
 
 block content
   if !user
-    p
-      | Welcome, #{session.name}. Want to 
-      a(href="/photo/upload") upload
-      |  a photo?
+    if !(photos && photos.length)
+      p
+        | Welcome, #{session.name}. You don't have any photos yet. Want to 
+        a(href="/photo/upload") upload
+        |  one?
+    else
+      p
+        | Welcome, #{session.name}. Want to 
+        a(href="/photo/upload") upload
+        |  a photo?
+  
+  else
+    if !(photos && photos.length)
+      p #{user.fullname} does not have any public photos.
+  
+  ul.photos
+    each photo in photos
+      li
+        b 
+          a(href="/photo/#{photo.id}")= photo.title
+        |  
+        span (#{photo.likes.length} likes)
+        if !user
+          |  
+          span #{photo.isPrivate ? '🔒' : '🌏'}
+        br
+        i created at #{photo.created.toGMTString()}
+        br
+        | tagged under 
+        - for (var i = 0; i < photo.tags.length; i++)
+          b #{photo.tags[i]}
+          if i < photo.tags.length - 1
+            | , 
+        br
+        br
+  
+  if !user
+    form(method='get', action='/user/search', enctype='application/x-www-form-urlencoded')
+      label(for='query') Find user 
+      i (by lastname) 
+      input#query(name='query')
+      input(type='submit', value='Search')
+  else
+    a(href="/") Home

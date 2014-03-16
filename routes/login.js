@@ -55,11 +55,11 @@ module.exports = function (app) {
         
         var user = {
           _id : email,
-          'name' : name,
-          'surname' : surname,
-          'address' : address,
-          'birthDate' : birthDate,
-          'turkishIdentificationNumber' : turkishIdentificationNumber
+          name : name,
+          surname : surname,
+          address : address,
+          birthDate : birthDate,
+          turkishIdentificationNumber : turkishIdentificationNumber
         };
         
         user.salt = bytes.toString('utf8');
@@ -104,7 +104,7 @@ module.exports = function (app) {
     if (app.settings.env === 'development') {
       console.log('Filling in dummy email/pass');
       
-      params.dummyEmail = 'a@a.com';
+      params.dummyEmail = 'b@a.com';
       params.dummyPass = 'qwerty';
     }
     
