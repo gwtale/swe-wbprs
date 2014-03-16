@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  p Welcome back to WBPRS, please log in:
+  
+  form(method='post', action='/login', enctype='application/x-www-form-urlencoded')
+    if invalid
+      .error Please enter a valid email address and password.
+    ul
+      li
+        label(for='email') Email 
+        input#email(name='email')
+      li
+        label(for='pass') Password 
+        input#pass(name='pass')
+    input(type='submit', value='Log in')
+  
+  p
+    | Not a member yet? You can 
+    a(href="/signup") sign up!
