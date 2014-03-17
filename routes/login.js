@@ -103,12 +103,12 @@ module.exports = function (app) {
     };
     
     // if in development env, filling in the form to make my life easier
-    if (app.settings.env === 'development') {
-      console.log('Filling in dummy email/pass');
-      
-      params.dummyEmail = 'c@a.com';
-      params.dummyPass = 'qwerty';
-    }
+    // if (app.settings.env === 'development') {
+    //   console.log('Filling in dummy email/pass');
+    //   
+    //   params.dummyEmail = 'c@a.com';
+    //   params.dummyPass = 'qwerty';
+    // }
     
     res.render('login.jade', params);
   });
