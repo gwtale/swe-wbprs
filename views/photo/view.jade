@@ -7,7 +7,7 @@ block content
     form(method='post', action='/photo/#{action}/#{photo.id}')
       span #{photo.likes.length} likes
       | 
-      if owned
+      if owned || session.admin
         span #{photo.isPrivate ? '🔒' : '🌏'}
       else
         input(type='submit', value='#{liked ? "💔" : "❤️"}')

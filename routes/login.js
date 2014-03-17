@@ -148,12 +148,24 @@ module.exports = function (app) {
         });
       }
       
-      // all is good, setting up session params
-      req.session.authenticated = true;
-      req.session.email = email;
-      req.session.name = user.fullname;
+      if (user.isAdmin) {
+        // we have an admin!
+        req.session.authenticated = true;
+        req.session.email = email;
+        req.session.name = user.fullname;
+        req.session.admin = true;
+        
+        res.redirect('/admin');
+      }
       
-      res.redirect('/');
+      else {
+        // all is good, setting up session params
+        req.session.authenticated = true;
+        req.session.email = email;
+        req.session.name = user.fullname;
+        
+        res.redirect('/');
+      }
     });
   });
 };

@@ -7,5 +7,12 @@ html
       h2
         a(href="/") WBPRS
         |  — #{title}
+      if session.admin
+        p
+          i 
+            | (you have 
+            a(href="/admin") admin
+            | 
+            | powers)
     section.content
       block content

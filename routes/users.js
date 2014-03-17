@@ -137,10 +137,28 @@ module.exports = function (app) {
   
   app.get('/user/:id', auth, function (req, res, next) {
     var id = req.param('id');
+    var tags = req.param('tags');
     
     // redirecting to root if the queried id is current user's id
     if (id == req.session.email) {
       return res.redirect("/");
+    }
+    
+    var query = {
+      owner : id
+    };
+    
+    // admins can see all the photos
+    if (!req.session.admin) {
+      query.isPrivate = false;
+    }
+    
+    if (tags) {
+      tags = tags.split(' ');
+      
+      query.tags = {
+        $all : tags
+      }
     }
     
     User.findById(id, function (err, user) {
@@ -148,16 +166,14 @@ module.exports = function (app) {
       
       if (!user) return next(); // 404
       
-      Photo.find({
-        owner : user.id,
-        isPrivate : false
-      }).sort('created').exec(function (err, photos) {
+      Photo.find(query).sort('created').exec(function (err, photos) {
         if (err) return next(err);
         
         res.render('photostream.jade', {
           title : user.fullname + '\'s Photostream',
           user : user,
-          photos : photos
+          photos : photos,
+          tags : tags ? tags.join(' ') : undefined
         });
       });
     });

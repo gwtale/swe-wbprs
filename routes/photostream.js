@@ -11,14 +11,26 @@ module.exports = function (app) {
   
   app.get('/', auth, function (req, res, next) {
     
-    Photo.find({
+    var query = {
       owner : req.session.email
-    }).sort('created').exec(function (err, photos) {
+    };
+    
+    var tags = req.param('tags');
+    if (tags) {
+      tags = tags.split(' ');
+      
+      query.tags = {
+        $all : tags
+      }
+    }
+    
+    Photo.find(query).sort('created').exec(function (err, photos) {
       if (err) return next(err);
       
       res.render('photostream.jade', {
         title : req.session.name + '\'s Photostream',
-        photos : photos
+        photos : photos,
+        tags : tags ? tags.join(' ') : undefined
       });
     });
   });

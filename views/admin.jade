@@ -1,29 +1,28 @@
 extends layout
 
 block content
-  if !user
-    if !(photos && photos.length)
-      p
-        | Welcome, #{session.name}. You don't have any photos yet. Want to 
-        a(href="/photo/upload") upload
-        |  one?
-    else
-      p
-        | Welcome, #{session.name}. Want to 
-        a(href="/photo/upload") upload
-        |  a photo?
+  p Welcome Master #{session.name}.
   
-  else
-    if !(photos && photos.length)
-      p #{user.fullname} does not have any public photos.
+  p
+    b We have #{users.length} registered users:
+    
+  ul.users
+    each user in users
+      li
+        a(href="/user/#{user.id}")= user.fullname
+        if user.isAdmin
+          |  
+          i (admin)
   
-  - action = user ? /user/ + user.id : '/'
-  form(method='get', action=action, enctype='application/x-www-form-urlencoded')
+  p
+    b There are a total of #{photos.length} photos on our system:
+  
+  form(method='get', action='/admin', enctype='application/x-www-form-urlencoded')
     label(for='tags') Filter by tags 
     i (seperated by space) 
     input#tags(name='tags', value=tags)
     input(type='submit', value='Filter')
-  
+
   ul.photos
     each photo in photos
       li
@@ -31,11 +30,13 @@ block content
           a(href="/photo/#{photo.id}")= photo.title
         |  
         span (#{photo.likes.length} likes)
-        if !user || session.admin
+        if !user
           |  
           span #{photo.isPrivate ? '🔒' : '🌏'}
         br
-        i created at #{photo.created.toGMTString()}
+        i
+          | created at #{photo.created.toGMTString()} by 
+          a(href="/user/#{photo.owner}") #{photo.owner}
         br
         | tagged under 
         - for (var i = 0; i < photo.tags.length; i++)
@@ -44,7 +45,7 @@ block content
             | , 
         br
         br
-  
+
   if !user
     form(method='get', action='/user/search', enctype='application/x-www-form-urlencoded')
       label(for='query') Find user 
