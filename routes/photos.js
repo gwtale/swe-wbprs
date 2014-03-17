@@ -1,3 +1,4 @@
+var winston = require('winston');
 var fs = require('fs');
 
 var mongoose = require('mongoose');
@@ -47,8 +48,7 @@ module.exports = function (app) {
      }, function (err, photo) {
        if (err) return next(err);
        
-       console.log('Uploaded new photo w/ id: ' + photo._id);
-       
+       winston.info(user + ', ' + 'photo upload');
        res.redirect("/");
     });
   });
@@ -102,6 +102,7 @@ module.exports = function (app) {
         return next(new Error('No photo to edit?!'));
       }
       
+      winston.info(user + ', ' + 'photo edit');
       res.redirect("/photo/" + id);
     })
   });
@@ -127,6 +128,7 @@ module.exports = function (app) {
         return next(new Error('Nothing changed?!'));
       }
       
+      winston.info(user + ', ' + 'photo like');
       res.redirect("/photo/" + id);
     })
   });
@@ -152,13 +154,13 @@ module.exports = function (app) {
         return next(new Error('Nothing changed?!'));
       }
       
+      winston.info(user + ', ' + 'photo unlike');
       res.redirect("/photo/" + id);
     })
   });
   
   /*
-   * GET delete photo -- TODO: This is baaad, should've used DELETE
-   *                           but I'm in a hurry *sadface*
+   * GET delete photo -- TODO: This is not ideal, will change to use DELETE
    */
   
   app.get("/photo/delete/:id", auth, function (req, res, next) {
@@ -177,6 +179,7 @@ module.exports = function (app) {
         return next(new Error('No photo to delete?!'));
       }
       
+      winston.info(user + ', ' + 'photo delete');
       res.redirect("/");
     })
   });

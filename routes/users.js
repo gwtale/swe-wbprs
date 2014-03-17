@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Photo = mongoose.model('Photo');
@@ -72,8 +74,7 @@ module.exports = function (app) {
           return next(err);
         }
         
-        // user is alive!
-        console.log('User profile edited w/ email: %s', email);
+        winston.info(email + ', ' + 'profile edit');
         
         req.session.authenticated = true;
         req.session.email = email;

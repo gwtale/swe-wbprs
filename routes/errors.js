@@ -1,3 +1,4 @@
+var winston = require('winston');
 
 module.exports = function (app) {
   
@@ -14,7 +15,7 @@ module.exports = function (app) {
   
   // 500
   app.use(function (err, req, res, next) {
-    console.error('Error at %s\n', req.url, err.stack);
+    winston.error(req.session.user + ', ' + req.url + ', ' + err.stack);
     
     var status = 500;
     res.status(status);

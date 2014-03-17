@@ -1,3 +1,5 @@
+var winston = require('winston');
+
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 
@@ -79,7 +81,7 @@ module.exports = function (app) {
           }
           
           // user is alive!
-          console.log('User created w/ email: %s', email);
+          winston.info(email + ', ' + 'sign up');
           
           req.session.authenticated = true;
           req.session.email = email;
@@ -166,6 +168,8 @@ module.exports = function (app) {
         
         res.redirect('/');
       }
+      
+      winston.info(email + ', ' + 'login');
     });
   });
 };
