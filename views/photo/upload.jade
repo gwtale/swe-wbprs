@@ -3,6 +3,8 @@ extends ../layout
 block content
   
   form(method='post', action='/photo/upload', enctype='multipart/form-data')
+    if invalid
+      .error Please enter a valid title.
     ul
       li
         label(for="title") Title 

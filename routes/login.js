@@ -104,7 +104,7 @@ module.exports = function (app) {
     if (app.settings.env === 'development') {
       console.log('Filling in dummy email/pass');
       
-      params.dummyEmail = 'b@a.com';
+      params.dummyEmail = 'c@a.com';
       params.dummyPass = 'qwerty';
     }
     

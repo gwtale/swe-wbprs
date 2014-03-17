@@ -29,6 +29,13 @@ module.exports = function (app) {
     var user = req.session.email;
     var image = req.files.image;
     
+    if (!title.length) {
+      return res.render('photo/upload.jade', {
+        title : 'Upload photo',
+        invalid : true
+      });
+    }
+    
     Photo.create({
       title : title,
       tags : tags,

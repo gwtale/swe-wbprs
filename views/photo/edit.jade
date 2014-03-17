@@ -3,6 +3,8 @@ extends ../layout
 block content
 
   form(method='post', action='/photo/edit/#{photo.id}', enctype='application/x-www-form-urlencoded')
+    if invalid
+      .error Please enter a valid title.
     ul
       li
         label(for="title") Title 
